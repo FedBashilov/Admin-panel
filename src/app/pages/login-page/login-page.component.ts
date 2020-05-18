@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Subscription } from "rxjs";
 
 import { AuthService } from '../../services/auth.service';
 
@@ -8,15 +10,30 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.scss']
 })
-export class LoginPageComponent implements OnInit {
+export class LoginPageComponent implements OnInit, OnDestroy {
 
   loginForm: FormGroup;
   loginErrorMessage: string = "";
 
-  constructor(private authService: AuthService, private fb: FormBuilder) { }
+  private subscriptionAdmin: Subscription;
+  public currentAdmin: string = '';
+
+  constructor(private authService: AuthService, private fb: FormBuilder, private router: Router) {
+    this.subscriptionAdmin = this.authService.currentAdmin.subscribe(currentAdmin => {
+      this.currentAdmin = currentAdmin;
+      if(this.currentAdmin){
+        this.router.navigate(['/orders']);
+      }
+    });
+
+  }
 
   ngOnInit(): void {
     this.initForm();
+  }
+
+  ngOnDestroy(){
+    this.subscriptionAdmin.unsubscribe();
   }
 
   initForm(){
@@ -50,7 +67,6 @@ export class LoginPageComponent implements OnInit {
     this.authService.login(this.loginForm.value.login, this.loginForm.value.password).subscribe( (response: any) =>{
       if(response.jwt){
         this.authService.setJWT(response.jwt);
-        console.log(this.authService.getJWT());
 
         this.loginErrorMessage = "";
       } else {

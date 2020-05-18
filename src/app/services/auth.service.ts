@@ -25,6 +25,7 @@ export class AuthService {
 
   setJWT(jwt: string){
     localStorage.setItem("jwt", jwt);
+    this.currentAdminSubject.next( jwt );
   }
 
 

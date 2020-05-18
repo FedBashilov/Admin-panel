@@ -2,12 +2,13 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Podkova:wght@400;500;600;700;800&display=swap');
 
+@import 'src/variables.scss';
 
-html, body { height: 100%; }
-body {
+html, body {
+  height: 100%;
   margin: 0;
   font-family: 'Montserrat', sans-serif;
-
+    overflow-x: hidden;
 }
 
 .common_button{
@@ -22,8 +23,5 @@ body {
   color: #000000;
   padding: 10px 35px;
   display: block;
-}
-
-.lemon{
-  background: #FFFDC5;
+  background: $lemon;
 }
