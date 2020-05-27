@@ -30,7 +30,7 @@ export class AuthService {
 
 
   login(login, password): Observable<any>{
-    return this.httpClient.post<any>(`${this.PHP_API_SERVER}/API.php/login-admin`, {data: { login: login, password: password }});
+    return this.httpClient.post<any>(`${this.PHP_API_SERVER}/API.php/admins/login`, {data: { login: login, password: password }});
   }
 
   logout(){
